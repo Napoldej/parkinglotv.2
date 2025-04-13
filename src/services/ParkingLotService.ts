@@ -79,6 +79,7 @@ export class ParkingLotService {
             }
         })
     }
+    
     static async getinstance(id: string) {
       const prisma = PrismaDB.getInstance();
       const data = await prisma.parkingLot.findUnique({

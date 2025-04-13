@@ -16,6 +16,9 @@ export default class VehicleService {
         } else if (size === "Large") {
             vehicleInstance = new Bus(licensePlate);
         }
+        if (!vehicleInstance || !vehicleInstance.size) {
+            throw new Error("Vehicle or size is missing");
+          }
         const savedVehicle = await prisma.vehicle.create({
             data:{
             licensePlate : vehicleInstance!.licensePlate,
@@ -24,13 +27,17 @@ export default class VehicleService {
         }}
     )
 
-        return savedVehicle
+        return savedVehicle;
     }
 
     static async getAllVehicles(){
         return await prisma.vehicle.findMany({
             include:{
-                parkedSpots: true
+                parkedSpots: {
+                    include: {
+                        level: true
+                    }
+                }
             }
         })
     }

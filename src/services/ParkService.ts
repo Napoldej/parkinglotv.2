@@ -38,6 +38,9 @@ export class ParkingService {
 
 
         const parkinglot = await prisma.parkingLot.findFirst()
+        if (!parkinglot) {
+            throw new Error("Parking lot not found");
+        }
         const parkinglotInstance = await ParkingLotService.getinstance(parkinglot.id);
         console.log(parkinglotInstance)
 
@@ -47,6 +50,9 @@ export class ParkingService {
         
         if (parked) {
             const dbparkingLot = await prisma.parkingLot.findFirst()
+            if (!dbparkingLot) {
+                throw new Error("Parking lot not found");
+            }
             const occupiedSpots = vehicleInstance!.parkedSpots;
             const updatePromises = occupiedSpots.map(async (spot) => {
                 const dbSpot = await prisma.parkingSpot.findFirst({
@@ -77,7 +83,7 @@ export class ParkingService {
 
             await prisma.parkingLot.update({
                 where: { 
-                    id: dbparkingLot.id
+                    id: dbparkingLot.id 
                 },
                 data: {
                     availableSpots: parkinglotInstance!.availableSpots
@@ -91,7 +97,7 @@ export class ParkingService {
     }
 
     static async UnparkVehicle(licensePlate: string) {
-        const vehicle: Vehicle = await prisma.vehicle.findUnique({
+        const vehicle = await prisma.vehicle.findUnique({
             where: {
                 licensePlate: licensePlate
             },
@@ -103,7 +109,8 @@ export class ParkingService {
                 }
             }
         });
-        if(!vehicle){
+
+        if (!vehicle) {
             return { success: false, message: "Vehicle not found" };
         }
         let vehicleInstance: Motorcycle | Car | Bus | null = null;
