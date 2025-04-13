@@ -5,7 +5,7 @@ export class Car extends Vehicle {
     constructor(licensePlate: string) {
         super(licensePlate);
         this.size = VehicleSize.Compact;
-        this.spotsNeeded = 4;
+        this.spotsNeeded = 1;
     }
 
     canFitSpot(spot: ParkingSpot): boolean {

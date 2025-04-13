@@ -36,7 +36,7 @@ export abstract class Vehicle{
         }
         this.parkedSpots = [];
       }
-
+    
     abstract canFitSpot(spot: ParkingSpot): boolean;
     abstract print(): void
 

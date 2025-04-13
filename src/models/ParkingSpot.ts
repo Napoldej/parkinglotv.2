@@ -41,6 +41,7 @@ export class ParkingSpot {
   }
 
   canFitVehicle(vehicle: Vehicle): boolean {
+    console.log(this.isAvailable() && vehicle.canFitSpot(this)) 
     return this.isAvailable() && vehicle.canFitSpot(this);
   }
 

@@ -34,8 +34,8 @@ export class Level {
             else if(i < largeSpots + compactSpots){
                 spots= VehicleSize.Compact;
             }
-            let row = i / this.SPOT_PER_ROWS
-            this.parkingSpots[i] = new ParkingSpot(this, row, i, spots);
+            let row = Math.floor(i / this.SPOT_PER_ROWS)
+            this.parkingSpots.push(new ParkingSpot(this, row, i, spots))
         }
         this.availableSpots = numberSpots
     }
@@ -75,8 +75,7 @@ export class Level {
         let spotsFound = 0;
         
         for (let i = 0; i < this.parkingSpots.length; i++) {
-          const spot = this.parkingSpots[i];
-          
+          let spot = this.parkingSpots[i];
           if (lastRow !== spot.getRow()) {
             spotsFound = 0;
             lastRow = spot.getRow();
@@ -87,12 +86,10 @@ export class Level {
           } else {
             spotsFound = 0;
           }
-          
           if (spotsFound === spotsNeeded) {
             return i - (spotsNeeded - 1);
           }
         }
-        
         return -1;
       }
       

@@ -1,11 +1,10 @@
-// model ParkingLot {
-//     id             String        @id @default(auto()) @map("_id") @db.ObjectId
-//     levels         Level[]
-//   }
 import { Level } from "./Level"
 import { Vehicle } from "./Vehicle";
 
+
+
 export class ParkingLot {
+    id?: string
     NUM_LEVELS: number;
     SPOTS_PER_LEVEL: number;
     levels: Level[];
@@ -28,7 +27,6 @@ export class ParkingLot {
     parkVehicle(vehicle: Vehicle) {
       for (let i = 0; i < this.levels.length; i++) {
         if (this.levels[i].parkVehicle(vehicle)) {
-          this.availableSpots -= vehicle.getSpotsNeeded();
           return true;
         }
       }
@@ -46,5 +44,6 @@ export class ParkingLot {
         availableSpots: this.availableSpots
       };
     }
+
   }
   

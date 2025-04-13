@@ -5,7 +5,7 @@ export class Bus extends Vehicle {
     constructor(licensePlate: string) {
         super(licensePlate);
         this.size = VehicleSize.Large;
-        this.spotsNeeded = 4;
+        this.spotsNeeded = 5;
     }
 
     canFitSpot(spot: ParkingSpot): boolean {

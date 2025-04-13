@@ -16,7 +16,7 @@ enum VehicleSize {
 
 model Vehicle {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  licensePlate   String
+  licensePlate   String        @unique
   size           VehicleSize
   spotsNeeded    Int
   parkedSpots    ParkingSpot[] // A Vehicle can have many ParkingSpots
@@ -43,6 +43,8 @@ model Level {
 }
 
 model ParkingLot {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  levels         Level[]
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  levels         Level[]   // A one-to-many relationship with Level
+  totalSpots     Int
+  availableSpots Int
 }
