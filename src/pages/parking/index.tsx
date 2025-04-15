@@ -5,12 +5,29 @@ import UnparkingForm from '@/components/parking/UnparkingForm';
 import VehicleForm from '@/components/parking/VehicleForm';
 import ParkingStatus from '@/components/parking/ParkingStatus';
 import VehicleList from '@/components/parking/VehicleList';
+import ParkingLotForm from '@/components/parking/ParkingLotForm';
 
 export default function ParkingPage() {
   const [status, setStatus] = useState<{
     type: 'success' | 'error';
     message: string;
   } | null>(null);
+
+  const handleCreateParkingLot = async () => {
+    try {
+      setStatus({ type: 'success', message: 'Parking lot initialized successfully!' });
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Failed to initialize parking lot' });
+    }
+  };
+
+  const handleDeleteParkingLot = async () => {
+    try {
+      setStatus({ type: 'success', message: 'Parking lot deleted successfully!' });
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Failed to delete parking lot' });
+    }
+  };
 
   const handlePark = async (licensePlate: string) => {
     try {
@@ -88,6 +105,14 @@ export default function ParkingPage() {
       {status && (
         <ParkingStatus type={status.type} message={status.message} />
       )}
+
+      <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900">Initialize System</h2>
+        <ParkingLotForm 
+          onCreateParkingLot={handleCreateParkingLot}
+          onDeleteParkingLot={handleDeleteParkingLot}
+        />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="bg-white p-6 rounded-lg shadow-md">

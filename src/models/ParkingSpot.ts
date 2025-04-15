@@ -2,17 +2,6 @@ import { Level } from "./Level";
 import { VehicleSize } from "./VehicleSize";
 import { Vehicle } from "./Vehicle";
 
-// model ParkingSpot {
-//     id             String        @id @default(auto()) @map("_id") @db.ObjectId
-//     spotNumber     Int
-//     row            Int
-//     size           VehicleSize
-//     levelId        String
-//     level          Level         @relation(fields: [levelId], references: [id])
-//     vehicleId      String?
-//     vehicle        Vehicle?      @relation(fields: [vehicleId], references: [id])
-//     isOccupied     Boolean       @default(false)  // New field to track if the spot is occupied
-//   }
 
 export class ParkingSpot {
   id?: string; 

@@ -3,9 +3,10 @@ import PrismaDB from '@/lib/prisma';
 import { Level } from '@/models/Level';
 import { ParkingSpot } from '@/models/ParkingSpot';
 
-const prisma = PrismaDB.getInstance();
+
 
 export class ParkingLotService {
+  static prisma = PrismaDB.getInstance();
   static async createParkingLot() {
     const parkingLot = new ParkingLot();
 
@@ -24,7 +25,7 @@ export class ParkingLotService {
         }
       };
     });
-    const savedParkingLot = await prisma.parkingLot.create({
+    const savedParkingLot = await this.prisma.parkingLot.create({
       data: {
         totalSpots: parkingLot.totalSpots,
         availableSpots: parkingLot.availableSpots,
@@ -46,22 +47,22 @@ export class ParkingLotService {
 
 
   static async deleteparkinglotwithcascade(parkingLotId : string){
-    const levels = await prisma.level.findMany({
+    const levels = await this.prisma.level.findMany({
         where: { parkingLotId },
         select: { id: true }
       })
     
       const levelIds = levels.map((l: { id: string }) => l.id) 
     
-      await prisma.parkingSpot.deleteMany({
+      await this.prisma.parkingSpot.deleteMany({
         where: { levelId: { in: levelIds } }
       })
     
-      await prisma.level.deleteMany({
+      await this.prisma.level.deleteMany({
         where: { parkingLotId }
       })
     
-      await prisma.parkingLot.delete({
+      await this.prisma.parkingLot.delete({
         where: { id: parkingLotId }
       })
     
@@ -69,7 +70,7 @@ export class ParkingLotService {
     }
 
     static async getparkinglot(){
-        return await prisma.parkingLot.findMany({
+        return await this.prisma.parkingLot.findMany({
             include: {
                 levels: {
                     include:{
@@ -79,10 +80,9 @@ export class ParkingLotService {
             }
         })
     }
-    
+
     static async getinstance(id: string) {
-      const prisma = PrismaDB.getInstance();
-      const data = await prisma.parkingLot.findUnique({
+      const data = await this.prisma.parkingLot.findUnique({
         where: { id },
         include: { 
           levels: {

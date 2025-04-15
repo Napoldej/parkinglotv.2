@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Vehicle } from '@prisma/client';
+import { Vehicle } from '@/models/Vehicle';
 
 type VehicleWithSpots = Vehicle & {
   parkedSpots: Array<{

@@ -1,17 +1,19 @@
 import { Bus } from "@/models/Bus";
 import { Car } from "@/models/Car";
 import { Motorcycle } from "@/models/Motorcycle";
-import { ParkingLot } from "@/models/ParkingLot";
 import { ParkingSpot } from "@/models/ParkingSpot";
-import { Vehicle } from "@/models/Vehicle";
 import PrismaDB from "@/lib/prisma";
 import { Level } from "@/models/Level";
 import { ParkingLotService } from "./ParkingLotService";
-const  prisma = PrismaDB.getInstance()
+
+
 
 export class ParkingService {
+
+    static prisma = PrismaDB.getInstance();
+    
     static async parkVehicle(licensePlate: string) {
-        const vehicle = await prisma.vehicle.findUnique({
+        const vehicle = await this.prisma.vehicle.findUnique({
             where: {
                 licensePlate: licensePlate
             }
@@ -37,7 +39,7 @@ export class ParkingService {
         vehicleInstance!.id = vehicle.id;
 
 
-        const parkinglot = await prisma.parkingLot.findFirst()
+        const parkinglot = await this.prisma.parkingLot.findFirst()
         if (!parkinglot) {
             throw new Error("Parking lot not found");
         }
@@ -49,13 +51,13 @@ export class ParkingService {
         console.log(parked)
         
         if (parked) {
-            const dbparkingLot = await prisma.parkingLot.findFirst()
+            const dbparkingLot = await this.prisma.parkingLot.findFirst()
             if (!dbparkingLot) {
                 throw new Error("Parking lot not found");
             }
             const occupiedSpots = vehicleInstance!.parkedSpots;
             const updatePromises = occupiedSpots.map(async (spot) => {
-                const dbSpot = await prisma.parkingSpot.findFirst({
+                const dbSpot = await this.prisma.parkingSpot.findFirst({
                   where: {
                     levelId: spot.level.id,
                     row: spot.row,
@@ -68,7 +70,7 @@ export class ParkingService {
                   return;
                 }
               
-                return prisma.parkingSpot.update({
+                return this.prisma.parkingSpot.update({
                   where: { id: dbSpot.id },
                   data: {
                     isOccupied: true,
@@ -81,7 +83,7 @@ export class ParkingService {
               
             
 
-            await prisma.parkingLot.update({
+            await this.prisma.parkingLot.update({
                 where: { 
                     id: dbparkingLot.id 
                 },
@@ -97,7 +99,7 @@ export class ParkingService {
     }
 
     static async UnparkVehicle(licensePlate: string) {
-        const vehicle = await prisma.vehicle.findUnique({
+        const vehicle = await this.prisma.vehicle.findUnique({
             where: {
                 licensePlate: licensePlate
             },
@@ -140,7 +142,7 @@ export class ParkingService {
         }
         try{
             vehicleInstance!.clearSpots();
-            const update_parkingspot = await prisma.parkingSpot.updateMany({
+            const update_parkingspot = await this.prisma.parkingSpot.updateMany({
                 where:{
                     vehicleId: vehicle.id
                 },
