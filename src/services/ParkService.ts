@@ -5,6 +5,7 @@ import { ParkingSpot } from "@/models/ParkingSpot";
 import PrismaDB from "@/lib/prisma";
 import { Level } from "@/models/Level";
 import { ParkingLotService } from "./ParkingLotService";
+import { VehicleSize } from "@/models/VehicleSize";
 
 
 
@@ -129,10 +130,10 @@ export class ParkingService {
         }
         vehicleInstance!.id = vehicle.id
         for(let i = 0; i < vehicle.parkedSpots.length; i++){
-            const levelInstance = new Level(vehicle.parkedSpots[i].level.floor, vehicle.parkedSpots[i].level.availableSpots);
-            let spot = new ParkingSpot(vehicle.parkedSpots[i].level, vehicle.parkedSpots[i].row, 
+            const levelInstance = new Level(vehicle.parkedSpots[i].level.floor, 30);
+            let spot = new ParkingSpot(levelInstance, vehicle.parkedSpots[i].row, 
                 vehicle.parkedSpots[i].spotNumber, 
-                vehicle.parkedSpots[i].size);
+                vehicle.parkedSpots[i].size as VehicleSize);
             spot.level = levelInstance;
             spot.id = vehicle.parkedSpots[i].id;
             spot.vehicle = vehicleInstance;
